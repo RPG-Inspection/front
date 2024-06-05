@@ -1,0 +1,37 @@
+.party-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.party-container h2 {
+  margin-bottom: 20px;
+}
+
+.party-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.party-container th, .party-container td {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+}
+
+.party-container th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.party-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.party-container li {
+  margin: 10px 0;
+}

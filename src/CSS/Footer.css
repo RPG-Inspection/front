@@ -1,0 +1,98 @@
+.footer-normal {
+    background-color: #5a71af; /* 배경색 */
+    color: white; /* 글자색 */
+    padding: 2px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    transition: height 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    height: 60px;
+}
+
+.footer-expanded {
+    background-color: #5a71af; /* 배경색 */
+    color: white; /* 글자색 */
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    transition: height 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    height: 70vh;
+}
+
+footer p {
+    margin: 0;
+    position: relative;
+}
+
+footer button.toggle-button {
+    width: 50px; /* 버튼의 너비 조정 */
+    height: 25px; /* 버튼의 높이 조정 */
+    position: absolute;
+    top: -20px; /* 푸터 상단 위로 더 이동 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #5a71af; /* 배경색을 푸터와 동일하게 설정 */
+    color: white;
+    border: none;
+    border-top-left-radius: 25px; /* 반원 형태로 만들기 */
+    border-top-right-radius: 25px; /* 반원 형태로 만들기 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    z-index: 1;
+}
+
+footer button.toggle-button:hover {
+    background-color: #42669e;
+}
+
+footer button.toggle-button .icon {
+    display: inline-block;
+    color: white; /* 아이콘 색상 변경 */
+    transition: transform 0.3s ease-in-out;
+}
+
+.RaidSettingsName { /* CSS 클래스 이름은 공백이 없어야 하므로 "Raid Settings"를 "RaidSettings"로 수정하였습니다 */
+    font-size: 24px; /* 글자 크기를 24px로 설정 */
+    font-weight: bold; /* 글자를 진하게 설정 */
+    color: #FFFFFF; /* 글자 색상을 흰색으로 설정, 필요에 따라 색상을 변경하세요 */
+    margin: 20px 0; /* 상하 여백을 20px로 설정 */
+  }
+
+  .Raid-button-group {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 10px; /* 버튼 사이의 간격 */
+  }
+  
+  .Raid-button-group input[type="radio"] {
+    display: none; /* 라디오 버튼 숨기기 */
+  }
+  
+  .Raid-button-group label {
+    display: inline-block;
+    cursor: pointer;
+    height: auto;
+    width: 100px; /* 라벨의 폭 */
+    border: 1px solid #333; /* 테두리 설정 */
+    line-height: 24px; /* 줄 높이 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    font-weight: bold; /* 글자 굵게 */
+    font-size: 24px; /* 글자 크기 */
+    background-color: #fff; /* 배경색 */
+    color: #333; /* 글자색 */
+    padding: 10px; /* 패딩 */
+    white-space: pre-wrap; /* 공백을 기준으로 줄바꿈 */
+  }
+  
+  .Raid-button-group input[type="radio"]:checked + label {
+    background-color: #333; /* 선택된 라벨의 배경색 */
+    color: #fff; /* 선택된 라벨의 글자색 */
+  }
+  
