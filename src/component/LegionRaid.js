@@ -28,21 +28,25 @@ const LegionRaid = () => {
 
   const handleOptionClick = (category, option) => {
     setSelectedOptions(prevState => {
-      // 기존에 선택된 옵션들
+      // 현재 선택된 카테고리의 옵션 배열
       const currentOptions = prevState[category];
-      // 선택된 옵션인지 확인
+      // 현재 클릭된 옵션이 이미 선택되어 있는지 확인
       const isSelected = currentOptions.includes(option);
-      // 새로운 옵션 선택/해제
-      const newOptions = isSelected ? [] : [option];
-      // 다른 카테고리의 선택 옵션 초기화
-      const updatedOptions = {};
-      Object.keys(prevState).forEach(key => {
-        updatedOptions[key] = key === category ? newOptions : [];
-      });
-      return updatedOptions;
+      // 새로운 옵션 배열
+      let newOptions = [];
+  
+      // 현재 클릭된 옵션이 이미 선택되어 있다면 해당 옵션을 제거하고,
+      // 아니라면 새로운 배열에 추가
+      if (isSelected) {
+        newOptions = currentOptions.filter(item => item !== option);
+      } else {
+        newOptions = [option];
+      }
+  
+      // 다른 카테고리의 옵션들은 유지하고 클릭된 옵션만 업데이트
+      return { ...prevState, [category]: newOptions };
     });
   };
-  
   
   
 
