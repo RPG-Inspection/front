@@ -31,12 +31,20 @@ const LegionRaid = () => {
       // 기존에 선택된 옵션들
       const currentOptions = prevState[category];
       // 선택된 옵션인지 확인
-      const isSelected = currentOptions === option;
+      const isSelected = currentOptions.includes(option);
       // 새로운 옵션 선택/해제
-      const newOptions = isSelected ? '' : option;
-      return { ...prevState, [category]: newOptions };
+      const newOptions = isSelected ? [] : [option];
+      // 다른 카테고리의 선택 옵션 초기화
+      const updatedOptions = {};
+      Object.keys(prevState).forEach(key => {
+        updatedOptions[key] = key === category ? newOptions : [];
+      });
+      return updatedOptions;
     });
   };
+  
+  
+  
 
   const options = {
     battleLevel: ['50', '55', '60'],
