@@ -15,7 +15,6 @@ const EpicRaid = () => {
         <button onClick={() => handleTabClick('epic2')} className={activeTab === 'epic2' ? 'active' : ''}>에픽 2</button>
         <button onClick={() => handleTabClick('epic3')} className={activeTab === 'epic3' ? 'active' : ''}>에픽 3</button>
       </div>
-
       <div className="tab-content">
         
       </div>
