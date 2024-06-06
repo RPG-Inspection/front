@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../CSS/LegionRaid.css';
+import React, { useState, useEffect } from 'react';
+import '../CSS/Raid.css';
 import baltanImg from '../image/baltan.jpg';
 import biakisImg from '../image/biakis.jpg';
 import kuxseitenImg from '../image/kuxseiten.jpg';
@@ -9,6 +9,8 @@ import kameImg from '../image/kame.jpg';
 
 const LegionRaid = () => {
   const [activeTab, setActiveTab] = useState('baltan');
+  const [radioValue, setRadioValue] = useState('default');
+
   const [selectedOptions, setSelectedOptions] = useState({
     battleLevel: [],
     characteristic: [],
@@ -22,11 +24,32 @@ const LegionRaid = () => {
     transcendence: []
   });
 
+    // 로컬 스토리지에서 사용자 설정값을 불러와서 설정 상태를 업데이트하는 함수
+    const loadOptionsFromLocalStorage = () => {
+      const storedOptions = localStorage.getItem('epicRaidOptions');
+      if (storedOptions) {
+        setSelectedOptions(JSON.parse(storedOptions));
+      }
+    };
+  
+    // 추가된 useEffect 훅: 로컬 스토리지에서 사용자 설정값을 불러와서 설정 상태를 업데이트
+  useEffect(() => {
+    loadOptionsFromLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    // 초기 렌더링 시에 선택된 탭에 따라 기본 설정 적용
+    handleRadioChange({ target: { value: radioValue } });
+  }, [activeTab]); // activeTab 값이 변경될 때마다 호출
+
+
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
   const handleOptionClick = (category, option) => {
+    if (radioValue === 'default') return; // 기본 설정일 때 옵션 변경 불가
+
     setSelectedOptions(prevState => {
       // 현재 선택된 카테고리의 옵션 배열
       const currentOptions = prevState[category];
@@ -34,7 +57,7 @@ const LegionRaid = () => {
       const isSelected = currentOptions.includes(option);
       // 새로운 옵션 배열
       let newOptions = [];
-  
+
       // 현재 클릭된 옵션이 이미 선택되어 있다면 해당 옵션을 제거하고,
       // 아니라면 새로운 배열에 추가
       if (isSelected) {
@@ -42,23 +65,253 @@ const LegionRaid = () => {
       } else {
         newOptions = [option];
       }
-  
+
       // 다른 카테고리의 옵션들은 유지하고 클릭된 옵션만 업데이트
       return { ...prevState, [category]: newOptions };
     });
   };
-  
-  
+
+  const handleRadioChange = (event) => {
+    const value = event.target.value;
+    setRadioValue(value);
+    const defaultOptions = {};
+    Object.keys(options).forEach(category => {
+      if (activeTab === 'baltan') {
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['50'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2100 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['유물'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['400'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['3333'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['1레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['5'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['알고보면 12'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 0'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } else if (activeTab === 'biakis') { 
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['50'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2100 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['유물'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['400'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['3333'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['1레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['5'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['알고보면 12'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 0'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } 
+      else if (activeTab === 'kuxseiten') {
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['50'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2100 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['유물'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['400'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['33333'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['1레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['5'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['알고보면 18'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 0'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } 
+      else if (activeTab === 'avrelshud') {
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['50'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2100 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['유물'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['400'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['33333'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['1레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['5'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['알고보면 18'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 0'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } 
+      else if (activeTab === 'ilyakan') {
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['60'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2200 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['유물'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['410'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['333331'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['2레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['7'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['알고보면 18'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 0'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } 
+      else if (activeTab === 'kame') {
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['60'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2300 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['고대 IV'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['420'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['333331'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['3레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['9'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['세구빛 30'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 35'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } else {
+        defaultOptions[category] = [options[category][0]]; // 그 외의 경우 기본값 설정
+      }
+    });
+    setSelectedOptions(defaultOptions);
+  };
 
   const options = {
     battleLevel: ['50', '55', '60'],
     characteristic: ['2100 이상', '2200 이상', '2300 이상'],
     abilityStone: ['유물', '고대 I', '고대 II', '고대 III', '고대 IV'],
     skillPoint: ['390', '400', '410', '420'],
-    engraving: ['3333', '33333', '333331','333332'],
+    engraving: ['3333', '33333', '333331', '333332'],
     equipmentSetEffect: ['1레벨', '2레벨', '3레벨'],
     gem: ['5', '7', '9', '10'],
-    card: ['알고보면 12', '알고보면 18','알고보면 30', '남바절 12', '세구빛 12', '세구빛 18','세구빛 30', '암구빛 12', '암구빛 18', '암구빛 30'],
+    card: ['알고보면 12', '알고보면 18', '알고보면 30', '남바절 12', '세구빛 12', '세구빛 18', '세구빛 30', '암구빛 12', '암구빛 18', '암구빛 30'],
     elixir: ['엘릭서0', '엘릭서 35', '엘릭서 40'],
     transcendence: ['초월 x', '초월 25', '초월 50', '초월 75', '초월 100', '초월 125']
   };
@@ -90,6 +343,7 @@ const LegionRaid = () => {
                       id={`${category}-${option}`}
                       checked={selectedOptions[category].includes(option)}
                       onChange={() => handleOptionClick(category, option)}
+                      disabled={radioValue === 'default'} // 기본 설정일 때 체크박스 비활성화
                     />
                     <label
                       htmlFor={`${category}-${option}`}
@@ -137,6 +391,10 @@ const LegionRaid = () => {
       </div>
 
       <div className="tab-content">
+        <input type='radio' id='default' name='difficult' value='default' onChange={handleRadioChange} checked={radioValue === 'default'} />
+        <label htmlFor="default">기본 설정</label>
+        <input type='radio' id='user' name='difficult' value='user' onChange={handleRadioChange} checked={radioValue === 'user'} />
+        <label htmlFor="user">사용자 설정</label>
         {renderTabContent(activeTab)}
       </div>
     </div>

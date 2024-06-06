@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import '../CSS/LegionRaid.css';
+import React, { useState, useEffect } from 'react';
+import '../CSS/Raid.css';
 import kayangelImg from '../image/baltan.jpg';
 import ivoryTowerImg from '../image/biakis.jpg';
 
@@ -18,11 +18,31 @@ const AbyssRaid = () => {
     transcendence: []
   });
 
+    // 로컬 스토리지에서 사용자 설정값을 불러와서 설정 상태를 업데이트하는 함수
+    const loadOptionsFromLocalStorage = () => {
+      const storedOptions = localStorage.getItem('epicRaidOptions');
+      if (storedOptions) {
+        setSelectedOptions(JSON.parse(storedOptions));
+      }
+    };
+  
+    // 추가된 useEffect 훅: 로컬 스토리지에서 사용자 설정값을 불러와서 설정 상태를 업데이트
+  useEffect(() => {
+    loadOptionsFromLocalStorage();
+  }, []);
+  const [radioValue, setRadioValue] = useState('default');
+  
+  useEffect(() => {
+    // 초기 렌더링 시에 선택된 탭에 따라 기본 설정 적용
+    handleRadioChange({ target: { value: radioValue } });
+  }, [activeTab]); // activeTab 값이 변경될 때마다 호출
+
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
   const handleOptionClick = (category, option) => {
+    if (radioValue === 'default') return;
     setSelectedOptions(prevState => {
       const currentOptions = prevState[category];
       const isSelected = currentOptions.includes(option);
@@ -36,6 +56,92 @@ const AbyssRaid = () => {
 
       return { ...prevState, [category]: newOptions };
     });
+  };
+
+  const handleRadioChange = (event) => {
+    const value = event.target.value;
+    setRadioValue(value);
+    const defaultOptions = {};
+
+    Object.keys(options).forEach(category => {
+      // 카양겔의 기본 설정값
+      if (activeTab === 'kayangel') {
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['50'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2100 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['유물'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['400'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['33333'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['1레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['5'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['알고보면 18'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 0'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } else if (activeTab === 'ivoryTower') { // 상아탑의 기본 설정값
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['60'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2300 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['고대 IV'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['420'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['333331'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['3레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['9'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['세구빛 30'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 0'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 x'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } else {
+        defaultOptions[category] = [options[category][0]]; // 그 외의 경우 기본값 설정
+      }
+    });
+    setSelectedOptions(defaultOptions);
   };
 
   const options = {
@@ -105,6 +211,10 @@ const AbyssRaid = () => {
       </div>
 
       <div className="tab-content">
+        <input type='radio' id='default' name='difficult' value='default' onChange={handleRadioChange} checked={radioValue === 'default'} />
+        <label htmlFor="default">기본 설정</label>
+        <input type='radio' id='user' name='difficult' value='user' onChange={handleRadioChange} checked={radioValue === 'user'} />
+        <label htmlFor="user">사용자 설정</label>
         {renderTabContent(activeTab)}
       </div>
     </div>

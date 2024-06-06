@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import '../CSS/LegionRaid.css';
+import React, { useState, useEffect } from 'react';
+import '../CSS/Raid.css';
 import BehemothImg from '../image/baltan.jpg';
 
 const EpicRaid = () => {
   const [activeTab, setActiveTab] = useState('Behemoth');
+  const [radioValue, setRadioValue] = useState('default');
+
   const [selectedOptions, setSelectedOptions] = useState({
     battleLevel: [],
     characteristic: [],
@@ -17,11 +19,73 @@ const EpicRaid = () => {
     transcendence: []
   });
 
+  // 로컬 스토리지에서 사용자 설정값을 불러와서 설정 상태를 업데이트하는 함수
+  const loadOptionsFromLocalStorage = () => {
+    const storedOptions = localStorage.getItem('epicRaidOptions');
+    if (storedOptions) {
+      setSelectedOptions(JSON.parse(storedOptions));
+    }
+  };
+
+  // 추가된 useEffect 훅: 로컬 스토리지에서 사용자 설정값을 불러와서 설정 상태를 업데이트
+  useEffect(() => {
+    loadOptionsFromLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    const defaultOptions = {};
+    Object.keys(options).forEach(category => {
+      if (radioValue === 'default') {
+        switch (category) {
+          case 'battleLevel':
+            defaultOptions[category] = ['60'];
+            break;
+          case 'characteristic':
+            defaultOptions[category] = ['2300 이상'];
+            break;
+          case 'abilityStone':
+            defaultOptions[category] = ['고대 I'];
+            break;
+          case 'skillPoint':
+            defaultOptions[category] = ['390'];
+            break;
+          case 'engraving':
+            defaultOptions[category] = ['333331'];
+            break;
+          case 'equipmentSetEffect':
+            defaultOptions[category] = ['3레벨'];
+            break;
+          case 'gem':
+            defaultOptions[category] = ['10'];
+            break;
+          case 'card':
+            defaultOptions[category] = ['세구빛 30'];
+            break;
+          case 'elixir':
+            defaultOptions[category] = ['엘릭서 40'];
+            break;
+          case 'transcendence':
+            defaultOptions[category] = ['초월 100'];
+            break;
+          default:
+            defaultOptions[category] = [options[category][0]];
+            break;
+        }
+      } else {
+        defaultOptions[category] = [options[category][0]];
+      }
+    });
+    setSelectedOptions(defaultOptions);
+    // eslint-disable-next-line
+  }, [radioValue]);
+
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
   const handleOptionClick = (category, option) => {
+    if (radioValue === 'default') return; // 기본 설정일 때 옵션 변경 불가
+
     setSelectedOptions(prevState => {
       const currentOptions = prevState[category];
       const isSelected = currentOptions.includes(option);
@@ -35,6 +99,41 @@ const EpicRaid = () => {
 
       return { ...prevState, [category]: newOptions };
     });
+  };
+
+  const handleRadioChange = (event) => {
+    const value = event.target.value;
+    setRadioValue(value);
+
+    if (value === 'default') {
+      const defaultOptions = {};
+      Object.keys(options).forEach(category => {
+        if (category === 'battleLevel') {
+          defaultOptions[category] = ['60'];
+        } else if (category === 'characteristic') {
+          defaultOptions[category] = ['2300 이상'];
+        } else if (category === 'abilityStone') {
+          defaultOptions[category] = '고대 I';
+        } else if (category === 'skillPoint') {
+          defaultOptions[category] = ['390'];
+        } else if (category === 'engraving') {
+          defaultOptions[category] = ['333331'];
+        } else if (category === 'equipmentSetEffect') {
+          defaultOptions[category] = ['3레벨'];
+        } else if (category === 'gem') {
+          defaultOptions[category] = ['10'];
+        } else if (category === 'card') {
+          defaultOptions[category] = ['세구빛 30'];
+        } else if (category === 'elixir') {
+          defaultOptions[category] = ['엘릭서40'];
+        } else if (category === 'transcendence') {
+          defaultOptions[category] = ['초월 100'];
+        } else {
+          defaultOptions[category] = [options[category][0]];
+        }
+      });
+      setSelectedOptions(defaultOptions);
+    }
   };
 
   const options = {
@@ -54,9 +153,7 @@ const EpicRaid = () => {
     const content = {
       Behemoth: { title: '베히모스 스펙 설정' }
     };
-
     const selectedContent = content[tabId];
-
     return (
       <div className="content active">
         <h2>{selectedContent.title}</h2>
@@ -72,6 +169,7 @@ const EpicRaid = () => {
                       id={`${category}-${option}`}
                       checked={selectedOptions[category].includes(option)}
                       onChange={() => handleOptionClick(category, option)}
+                      disabled={radioValue === 'default'} // 기본 설정일 때 체크박스 비활성화
                     />
                     <label
                       htmlFor={`${category}-${option}`}
@@ -97,11 +195,15 @@ const EpicRaid = () => {
           베히모스
         </button>
       </div>
-
       <div className="tab-content">
+        <input type='radio' id='default' name='difficult' value='default' onChange={handleRadioChange} checked={radioValue === 'default'} />
+        <label htmlFor="default">기본 설정</label>
+        <input type='radio' id='user' name='difficult' value='user' onChange={handleRadioChange} checked={radioValue === 'user'} />
+        <label htmlFor="user">사용자 설정</label>
         {renderTabContent(activeTab)}
       </div>
     </div>
   );
 };
+
 export default EpicRaid;
