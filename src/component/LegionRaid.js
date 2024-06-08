@@ -48,28 +48,25 @@ const LegionRaid = () => {
   };
 
   const handleOptionClick = (category, option) => {
-    if (radioValue === 'default') return; // 기본 설정일 때 옵션 변경 불가
-
+    if (radioValue === 'default') return;
+  
     setSelectedOptions(prevState => {
-      // 현재 선택된 카테고리의 옵션 배열
       const currentOptions = prevState[category];
-      // 현재 클릭된 옵션이 이미 선택되어 있는지 확인
       const isSelected = currentOptions.includes(option);
-      // 새로운 옵션 배열
       let newOptions = [];
-
-      // 현재 클릭된 옵션이 이미 선택되어 있다면 해당 옵션을 제거하고,
-      // 아니라면 새로운 배열에 추가
+  
       if (isSelected) {
+        // 이미 선택된 옵션이면 해당 옵션을 제거
         newOptions = currentOptions.filter(item => item !== option);
       } else {
-        newOptions = [option];
+        // 선택되지 않은 옵션이면 해당 옵션을 추가
+        newOptions = [...currentOptions, option];
       }
-
-      // 다른 카테고리의 옵션들은 유지하고 클릭된 옵션만 업데이트
+  
       return { ...prevState, [category]: newOptions };
     });
   };
+  
 
   const handleRadioChange = (event) => {
     const value = event.target.value;

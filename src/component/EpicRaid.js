@@ -85,21 +85,24 @@ const EpicRaid = () => {
 
   const handleOptionClick = (category, option) => {
     if (radioValue === 'default') return; // 기본 설정일 때 옵션 변경 불가
-
+  
     setSelectedOptions(prevState => {
       const currentOptions = prevState[category];
       const isSelected = currentOptions.includes(option);
       let newOptions = [];
-
+  
       if (isSelected) {
+        // 이미 선택된 옵션이면 해당 옵션을 제거
         newOptions = currentOptions.filter(item => item !== option);
       } else {
-        newOptions = [option];
+        // 선택되지 않은 옵션이면 해당 옵션을 추가
+        newOptions = [...currentOptions, option];
       }
-
+  
       return { ...prevState, [category]: newOptions };
     });
   };
+  
 
   const handleRadioChange = (event) => {
     const value = event.target.value;
