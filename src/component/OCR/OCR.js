@@ -3,7 +3,7 @@ import Tesseract from 'tesseract.js';
 export async function runOCR(canvasRef, outputRef) {
     const canvas = canvasRef.current;
     const outputText = outputRef.current;
-    outputText.innerHTML = '텍스트를 인식하는 중입니다...';
+    outputText.innerHTML = '텍스트를 인식하는 중입니다....';
     let results = [];
 
     const coordinates = [
