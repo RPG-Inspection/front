@@ -36,6 +36,18 @@ export async function runOCR(canvasRef, outputRef) {
         }
     }
 
-    outputText.innerHTML = '텍스트 인식 완료'; // 텍스트 인식 완료 후 메시지 지움
+    outputText.innerHTML = '텍스트 인식 완료';
     return results;
+}
+
+export function drawRectangles(ctx) {
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1230, 330, 470, 350);
+
+    ctx.strokeStyle = 'orange';
+    ctx.strokeRect(1280, 390, 245, 25);
+    ctx.strokeRect(1280, 475, 245, 25);
+    ctx.strokeRect(1280, 560, 245, 25);
+    ctx.strokeRect(1280, 645, 245, 25);
 }

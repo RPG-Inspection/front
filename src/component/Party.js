@@ -2,17 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { fetchPartyProfiles } from './apiService';
 import '../CSS/Party.css';
 
-const partyMembers = [
-  "빛쟁인거니",
-  "김실순",
-  "YWKAS",
-  "은빛물결호수",
-  "뚜띠될거니",
-  "남실순",
-  "쁘허될거니",
-  "우기시치",
-];
-
 const synergyData = {
   "치명타 적중률": ["배틀마스터", "건슬링어", "아르카나", "데빌헌터", "스트라이커", "기상술사"],
   "받는 피해 증가": ["소울이터", "소서리스", "버서커", "데모닉", "호크아이", "브레이커", "인파이터", "슬레이어"],
@@ -20,29 +9,43 @@ const synergyData = {
   "방어력 감소": ["워로드", "서머너", "블래스터", "디스트로이어", "리퍼"],
   "백헤드 피해 증가": ["워로드", "블레이드"],
   "치명타 피해량 증가": ["창술사"],
-  "낙인":["바드","홀리나이트","도화가"],
+  "낙인": ["바드", "홀리나이트", "도화가"],
 };
 
-const Party = ({ selectedOptions, apiMode }) => {
+const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
   const [profiles, setProfiles] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const loadProfiles = async () => {
-      try {
-        const data = await fetchPartyProfiles(partyMembers);
-        setProfiles(data);
-      } catch (err) {
-        setError(err.message);
+    console.log('Captured Nicknames:', capturedNicknames); // 디버깅 로그
+
+    if (capturedNicknames && capturedNicknames.length > 0) {
+      const validNicknames = capturedNicknames.filter(name => name.length >= 3); // 유효한 닉네임 필터링
+      if (validNicknames.length > 0) {
+        const loadProfiles = async () => {
+          try {
+            const data = await fetchPartyProfiles(validNicknames);
+            console.log('Fetched Profiles:', data); // 디버깅 로그
+            setProfiles(data);
+          } catch (err) {
+            console.error('Error fetching profiles:', err.message); // 에러 디버깅
+            setError(err.message);
+          }
+        };
+
+        loadProfiles();
       }
-    };
-
-    loadProfiles();
-  }, [selectedOptions]);
-
-
+    }
+  }, [capturedNicknames, selectedOptions]);
 
   const renderRows = () => {
+    if (!profiles || profiles.length === 0) {
+      return (
+        <tr>
+          <td colSpan="5">No data available</td>
+        </tr>
+      );
+    }
     return profiles.map((profile, index) => {
       const synergyList = Object.keys(synergyData).reduce((acc, key) => {
         if (synergyData[key].includes(profile.CharacterClassName)) {
@@ -50,8 +53,7 @@ const Party = ({ selectedOptions, apiMode }) => {
         }
         return acc;
       }, []).join(', ');
-      const passStatus = index % 3 === 0 ? "O" : "X";
-      //const passStatus = determinePassStatus(profile, selectedOptions);
+      const passStatus = determinePassStatus(profile, selectedOptions);
       const position = isSupportClass(profile.CharacterClassName) ? "서포터" : "딜러";
 
       return (
@@ -61,9 +63,7 @@ const Party = ({ selectedOptions, apiMode }) => {
           <td>{position}</td>
           <td>{passStatus}</td>
           <td>{synergyList}</td>
-          <p>{determinePassStatus}</p>
         </tr>
-        
       );
     });
   };

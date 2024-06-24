@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Papa from 'papaparse';
 import '../CSS/Footer.css';
 
 import LegionRaid from './LegionRaid';
@@ -9,28 +8,16 @@ import EpicRaid from './EpicRaid';
 
 const Footer = () => {
   const [expanded, setExpanded] = useState(false);
-  const [data, setData] = useState([]);
   const [selectedRaidType, setSelectedRaidType] = useState("Legion");
+  const [userSpec, setUserSpec] = useState(null); // 사용자 스펙 상태 추가
 
   useEffect(() => {
-    fetchCSV();
+    // 로컬 스토리지에서 사용자 스펙 가져오기
+    const userSpecFromLocalStorage = localStorage.getItem('userSpec');
+    if (userSpecFromLocalStorage) {
+      setUserSpec(JSON.parse(userSpecFromLocalStorage));
+    }
   }, []);
-
-  const fetchCSV = () => {
-    fetch('src/csv/Raid.csv')
-      .then(response => response.text())
-      .then(csvText => {
-        Papa.parse(csvText, {
-          header: true,
-          complete: (result) => {
-            setData(result.data);
-          },
-          error: (error) => {
-            console.error('Error parsing CSV:', error);
-          },
-        });
-      }).catch(error => console.error("Failed to load CSV:", error));
-  };
 
   const toggleSize = () => {
     setExpanded(!expanded);
@@ -39,20 +26,22 @@ const Footer = () => {
   const handleRadioChange = (event) => {
     setSelectedRaidType(event.target.value);
   };
+
   const renderRaidContent = () => {
     switch(selectedRaidType) {
       case 'Legion':
-        return <LegionRaid />;
+        return <LegionRaid userSpec={userSpec} />;
       case 'Abyss':
-        return <AbyssRaid />;
+        return <AbyssRaid userSpec={userSpec} />;
       case 'Kazeros':
-        return <KazerosRaid />;
+        return <KazerosRaid userSpec={userSpec} />;
       case 'Epic':
-        return <EpicRaid />;
+        return <EpicRaid userSpec={userSpec} />;
       default:
         return null;
     }
   };
+
   const footerClass = expanded ? "footer-expanded" : "footer-normal";
   const icon = expanded ? "∨" : "∧";
 
@@ -71,7 +60,7 @@ const Footer = () => {
           <input type="radio" id="KazerosRaid" name="RaidSetting" value="Kazeros" onChange={handleRadioChange} checked={selectedRaidType === 'Kazeros'} />
           <label htmlFor="KazerosRaid">카제로스 레이드</label>
           <input type="radio" id="EpicRaid" name="RaidSetting" value="Epic" onChange={handleRadioChange} checked={selectedRaidType === 'Epic'} />
-          <label htmlFor="EpicRaid">에픽     레이드</label>
+          <label htmlFor="EpicRaid">에픽 레이드</label>
         </div>
       </div>
       {renderRaidContent()}
