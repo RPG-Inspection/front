@@ -63,7 +63,7 @@ export async function runOCR(canvasRef, outputRef) {
         }
     }
 
-    outputText.innerHTML = '텍스트 인식 완료';
+    outputText.innerHTML = '';
     return results;
 }
 

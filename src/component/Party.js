@@ -82,12 +82,12 @@ const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
 
   const determinePassStatus = (profile) => {
     const RaidUser = {
-      "baltan": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "야발넘","윤권님","퓨어슈슈아","탄압","EQQuUEE"],
+      "baltan": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "야발넘","윤권님","퓨어슈슈아","탄압","EQQuUEE","아미마마"],
       "biakis": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "찬조만띄우는바드", "아미마마","야발넘","윤권님","퓨어슈슈아","탄압","EQQuUEE"],
       "kuxseiten": ["이세상사과", "구실순", "YWKAH","윤권님","퓨어슈슈아","하늘빚라떼", "아미파파", "찬조만띄우는바드", "아미마마","탄압","EQQuUEE"],
       "avrelshud": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "찬조만띄우는바드", "아미마마", "윤권님","퓨어슈슈아","탄압"],
       "ilyakan": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "아미마마","윤권님","퓨어슈슈아","탄압"],
-      "kame": ["이세상사과", "소서리스", "아미마마", "하늘빚라떼","퓨어슈슈아"],
+      "kame": ["이세상사과", "소서리스", "아미마마", "하늘빚라떼","퓨어슈슈아","아미마마"],
       "kayangel": ["이세상사과", "찬조만띄우는바드", "아미파파", "하늘빚라떼", "아미마마","윤권님","퓨어슈슈아"],
       "ivorytower": ["이세상사과", "소서리스", "버서커", "하늘빚라떼", "아미마마", "윤권님","퓨어슈슈아"],
       "eki": ["이세상사과", "하늘빚라떼", "퓨어슈슈아"],
@@ -97,9 +97,9 @@ const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
   
     const nicknames = RaidUser[raidkey];
     if (nicknames.includes(profile.CharacterName)) {
-      return "O";
+      return <span style={{ color: 'green', fontSize: '15pt' }}>O</span>;
     } else {
-      return "X";
+      return <span style={{ color: 'red', fontSize: '15pt' }}>X</span>;
     }
   };
 

@@ -53,15 +53,14 @@ const EpicRaid = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("raidSelectedVal", 'Behemoth');
     const savedOptions = JSON.parse(localStorage.getItem(activeTab));
     if (savedOptions) {
       setSelectedOptions(savedOptions);
     }
-  }, []);
+  }, [activeTab]);
 
   const handleTabClick = (tabId) => {
-    localStorage.setItem("raidSelectedVal",`${tabId}`);
+    localStorage.setItem("raidSelectedVal", `${tabId}`);
     setActiveTab(`${tabId}-default`);
   };
 
@@ -74,7 +73,7 @@ const EpicRaid = () => {
         if (isSelected) {
           newOptions = currentOptions.filter(item => item !== option);
         } else {
-          newOptions = [option];
+          newOptions = [...currentOptions, option];
         }
         return { ...prevState, [category]: newOptions };
       });
@@ -131,7 +130,6 @@ const EpicRaid = () => {
     localStorage.setItem(`${activeTab}-${presetName}`, JSON.stringify(selectedOptions));
     setShowSavePresetModal(false);
   };
-  
 
   const handleReset = () => {
     if (!isChecked) {
@@ -266,25 +264,25 @@ const EpicRaid = () => {
         </div>
       </div>
     );
-    };
-    
-    return (
-      <div className="tab-container">
-        <div className="tab-menu">
-          <button onClick={() => handleTabClick('Behemoth')} className={activeTab === 'Behemoth-default' ? 'active' : ''}>
-            <img src={BehemothImg} alt="베히모스" className='RaidImg' />
-            베히모스
-          </button>
-        </div>
-    
-        <div className="tab-content">
-          {renderTabContent(activeTab)}
-        </div>
+  };
+
+  return (
+    <div className="tab-container">
+      <div className="tab-menu">
+        <button onClick={() => handleTabClick('Behemoth')} className={activeTab === 'Behemoth-default' ? 'active' : ''}>
+          <img src={BehemothImg} alt="베히모스" className='RaidImg' />
+          베히모스
+        </button>
       </div>
-    );
-    };
-    
-    export default EpicRaid;
+  
+      <div className="tab-content">
+        {renderTabContent(activeTab)}
+      </div>
+    </div>
+  );
+};
+
+export default EpicRaid;
 
 const ToggleWrapper = styled.div`
   display: inline-block;

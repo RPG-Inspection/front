@@ -58,7 +58,7 @@ const KazerosRaid = () => {
     if (savedOptions) {
       setSelectedOptions(savedOptions);
     }
-  }, []);
+  }, [activeTab]);
 
   const handleTabClick = (tabId) => {
     localStorage.setItem("raidSelectedVal",`${tabId}`);

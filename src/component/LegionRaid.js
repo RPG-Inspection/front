@@ -13,6 +13,7 @@ import styled from 'styled-components';
 const LegionRaid = () => {
   const [activeTab, setActiveTab] = useState('baltan-default');
 
+
   
   const [selectedOptions, setSelectedOptions] = useState({
     battleLevel: [],
@@ -67,7 +68,7 @@ const LegionRaid = () => {
     if (savedOptions) {
       setSelectedOptions(savedOptions);
     }
-  }, []);
+  }, [activeTab]);
 
   const handleTabClick = (tabId) => {
     localStorage.setItem("raidSelectedVal",`${tabId}`);

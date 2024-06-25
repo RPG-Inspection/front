@@ -60,7 +60,7 @@ const Footer = () => {
           <input type="radio" id="KazerosRaid" name="RaidSetting" value="Kazeros" onChange={handleRadioChange} checked={selectedRaidType === 'Kazeros'} />
           <label htmlFor="KazerosRaid">카제로스 레이드</label>
           <input type="radio" id="EpicRaid" name="RaidSetting" value="Epic" onChange={handleRadioChange} checked={selectedRaidType === 'Epic'} />
-          <label htmlFor="EpicRaid">에픽 레이드</label>
+          <label htmlFor="EpicRaid">에픽<br/>레이드</label>
         </div>
       </div>
       {renderRaidContent()}
