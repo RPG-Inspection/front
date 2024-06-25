@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { fetchPartyProfiles } from './apiService';
+import reroding from '../image/reroding.png'
 import '../CSS/Party.css';
 
 const synergyData = {
@@ -12,9 +13,14 @@ const synergyData = {
   "낙인": ["바드", "홀리나이트", "도화가"],
 };
 
+
+
+
+
 const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
   const [profiles, setProfiles] = useState([]);
   const [error, setError] = useState(null);
+  const [raidkey,setRaidKey] = useState("");
 
   useEffect(() => {
     console.log('Captured Nicknames:', capturedNicknames); // 디버깅 로그
@@ -37,6 +43,9 @@ const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
       }
     }
   }, [capturedNicknames, selectedOptions]);
+  useEffect(() => {
+    setRaidKey(localStorage.getItem("raidSelectedVal"));
+  }, [])
 
   const renderRows = () => {
     if (!profiles || profiles.length === 0) {
@@ -53,6 +62,9 @@ const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
         }
         return acc;
       }, []).join(', ');
+
+
+
       const passStatus = determinePassStatus(profile, selectedOptions);
       const position = isSupportClass(profile.CharacterClassName) ? "서포터" : "딜러";
 
@@ -68,8 +80,39 @@ const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
     });
   };
 
+  const determinePassStatus = (profile) => {
+    const RaidUser = {
+      "baltan": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "야발넘","윤권님","퓨어슈슈아","탄압","EQQuUEE"],
+      "biakis": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "찬조만띄우는바드", "아미마마","야발넘","윤권님","퓨어슈슈아","탄압","EQQuUEE"],
+      "kuxseiten": ["이세상사과", "구실순", "YWKAH","윤권님","퓨어슈슈아","하늘빚라떼", "아미파파", "찬조만띄우는바드", "아미마마","탄압","EQQuUEE"],
+      "avrelshud": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "찬조만띄우는바드", "아미마마", "윤권님","퓨어슈슈아","탄압"],
+      "ilyakan": ["이세상사과", "구실순", "YWKAH", "하늘빚라떼", "아미파파", "아미마마","윤권님","퓨어슈슈아","탄압"],
+      "kame": ["이세상사과", "소서리스", "아미마마", "하늘빚라떼","퓨어슈슈아"],
+      "kayangel": ["이세상사과", "찬조만띄우는바드", "아미파파", "하늘빚라떼", "아미마마","윤권님","퓨어슈슈아"],
+      "ivorytower": ["이세상사과", "소서리스", "버서커", "하늘빚라떼", "아미마마", "윤권님","퓨어슈슈아"],
+      "eki": ["이세상사과", "하늘빚라떼", "퓨어슈슈아"],
+      "Behemoth": ["이세상사과", "하늘빚라떼"]
+    };
+  
+  
+    const nicknames = RaidUser[raidkey];
+    if (nicknames.includes(profile.CharacterName)) {
+      return "O";
+    } else {
+      return "X";
+    }
+  };
+
+  const onRefresh = () => {
+    setRaidKey(localStorage.getItem("raidSelectedVal"));
+  }
+
   return (
     <div className="party-container">
+      <button onClick={onRefresh} style={{ margin: '5px', display: 'flex', justifyContent: 'left' }}>
+  <     img src={reroding} style={{ width: '25px', height: '25px' }} />
+    </button>
+  
       <h2>군장 검사</h2>
       {error && <p className="error">{error}</p>}
       <table>
@@ -92,52 +135,9 @@ const Party = ({ selectedOptions = {}, apiMode, capturedNicknames }) => {
 
 export default Party;
 
-const determinePassStatus = (profile, selectedOptions) => {
-  if (!selectedOptions) {
-    console.error('selectedOptions is undefined');
-    return "X";
-  }
-
-  const {
-    battleLevel = [],
-    skillPoint = [],
-    gem = [],
-    characteristic = [],
-    abilityStone = [],
-    engraving = [],
-    equipmentSetEffect = [],
-    card = [],
-    elixir = [],
-    transcendence = []
-  } = selectedOptions;
-
-  const totalCharacteristic = profile.totalCharacteristic;
-  const battleLevelCondition = battleLevel.some(level => profile.CharacterLevel >= parseInt(level));
-  const skillPointCondition = skillPoint.some(point => profile.TotalSkillPoint >= parseInt(point));
-  const gemCondition = gem.some(level => profile.Gem && profile.Gem.includes(level));
-  const characteristicCondition = characteristic.some(value => totalCharacteristic >= parseInt(value.replace(' 이상', '')));
-  const abilityStoneCondition = abilityStone.includes(profile.AbilityStone);
-  const engravingCondition = engraving.some(engr => profile.Engraving && profile.Engraving.includes(engr));
-  const equipmentSetEffectCondition = equipmentSetEffect.includes(profile.EquipmentSetEffect);
-  const cardCondition = card.includes(profile.Card);
-  const elixirCondition = elixir.includes(profile.Elixir);
-  const transcendenceCondition = transcendence.includes(profile.Transcendence);
-
-  return (
-    battleLevelCondition &&
-    skillPointCondition &&
-    gemCondition &&
-    characteristicCondition &&
-    abilityStoneCondition &&
-    engravingCondition &&
-    equipmentSetEffectCondition &&
-    cardCondition &&
-    elixirCondition &&
-    transcendenceCondition
-  ) ? "O" : "X";
-};
 
 const isSupportClass = (characterClass) => {
   const supportClasses = ["홀리나이트", "바드", "도화가"];
   return supportClasses.includes(characterClass);
 };
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import '../CSS/RaidStyles.css';
 import baltanImg from '../image/baltan.png';
 import biakisImg from '../image/biakis.png';
@@ -9,8 +9,11 @@ import kameImg from '../image/kame.png';
 import styled from 'styled-components';
 
 
+
 const LegionRaid = () => {
   const [activeTab, setActiveTab] = useState('baltan-default');
+
+  
   const [selectedOptions, setSelectedOptions] = useState({
     battleLevel: [],
     characteristic: [],
@@ -59,13 +62,15 @@ const LegionRaid = () => {
   };
 
   useEffect(() => {
+    localStorage.setItem("raidSelectedVal", 'baltan');
     const savedOptions = JSON.parse(localStorage.getItem(activeTab));
     if (savedOptions) {
       setSelectedOptions(savedOptions);
     }
-  }, [activeTab]);
+  }, []);
 
   const handleTabClick = (tabId) => {
+    localStorage.setItem("raidSelectedVal",`${tabId}`);
     setActiveTab(`${tabId}-default`);
   };
 

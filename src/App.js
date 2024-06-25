@@ -5,6 +5,7 @@ import Header from './component/Header';
 import Footer from './component/Footer';
 import { initializeLocalStorage } from '../src/component/initializeLocalStorage.js';
 
+
 function App() {
   const [selectedOptions, setSelectedOptions] = useState({
     battleLevel: ['50', '55', '60'],
@@ -27,9 +28,9 @@ function App() {
 
   return (
     <div className="App">
-      <Header setApiMode={setApiMode} />
-      <Body selectedOptions={selectedOptions} apiMode={apiMode} />
-      <Footer />
+        <Header setApiMode={setApiMode} />
+        <Body selectedOptions={selectedOptions} apiMode={apiMode}  />
+        <Footer />
     </div>
   );
 }

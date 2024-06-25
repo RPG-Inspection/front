@@ -18,9 +18,6 @@ export async function fetchCharacterProfile(characterName) {
 
   const data = await response.json();
 
-  // 로그로 응답 데이터 확인
-  console.log(`Fetched data for ${characterName}:`, data);
-
   if (!data) {
       throw new Error(`Profile data is null for ${characterName}`);
   }

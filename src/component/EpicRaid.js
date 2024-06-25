@@ -53,13 +53,15 @@ const EpicRaid = () => {
   };
 
   useEffect(() => {
+    localStorage.setItem("raidSelectedVal", 'Behemoth');
     const savedOptions = JSON.parse(localStorage.getItem(activeTab));
     if (savedOptions) {
       setSelectedOptions(savedOptions);
     }
-  }, [activeTab]);
+  }, []);
 
   const handleTabClick = (tabId) => {
+    localStorage.setItem("raidSelectedVal",`${tabId}`);
     setActiveTab(`${tabId}-default`);
   };
 

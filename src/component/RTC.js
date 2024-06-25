@@ -67,7 +67,6 @@ const RTC = ({ onTextExtracted }) => {
   const captureAndExtract = async () => {
     captureScreen(videoRef, canvasRef, setCanvasDimensions);
     const result = await runOCR(canvasRef, outputRef);
-    console.log('Extracted Text:', result); // 디버깅 로그
     setExtractedText(result);
     if (onTextExtracted) {
       onTextExtracted(result);

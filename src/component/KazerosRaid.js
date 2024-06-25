@@ -53,13 +53,15 @@ const KazerosRaid = () => {
   };
 
   useEffect(() => {
+    localStorage.setItem("raidSelectedVal", 'eki');
     const savedOptions = JSON.parse(localStorage.getItem(activeTab));
     if (savedOptions) {
       setSelectedOptions(savedOptions);
     }
-  }, [activeTab]);
+  }, []);
 
   const handleTabClick = (tabId) => {
+    localStorage.setItem("raidSelectedVal",`${tabId}`);
     setActiveTab(`${tabId}-default`);
   };
 
