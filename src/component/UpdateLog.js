@@ -3,22 +3,11 @@ import '../CSS/UpdateLog.css';
 
 const UpdateLog = ({ onClose }) => {
   const logs = [
-    { date: '24.06.15', content: 'AWS 서비스 등록 이후 시연 시작' },
-    { date: '24.04.19', content: '' },
-    { date: '24.04.10', content: '' },
-    { date: '24.04.08', content: '' },
-    { date: '24.04.04', content: '' },
-    { date: '24.04.01', content: '' },
-    { date: '24.03.29', content: '' },
-    { date: '24.04.04', content: '' },
-    { date: '24.04.01', content: '' },
-    { date: '24.03.29', content: '' },
-    { date: '24.04.04', content: '' },
-    { date: '24.04.01', content: '' },
-    { date: '24.03.29', content: '' },
-    { date: '24.04.04', content: '' },
-    { date: '24.04.01', content: '' },
-    { date: '24.03.29', content: '' },
+    { date: '24.06.15', content: 'AWS 서비스 등록 이후 테스트 시작' },
+    { date: '24.06.20', content: '기본 동작 재테스트, 닉네임 인식 오류 수정' },
+    { date: '24.06.23', content: 'OCR 인식 전처리 추가' },
+    { date: '24.06.25', content: 'Guide Update!' },
+    { date: '24.06.25', content: '현재 카드 스펙 부분 미적용 알림(API 오류)' },
   ];
 
   return (
